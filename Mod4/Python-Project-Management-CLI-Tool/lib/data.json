@@ -1,16 +1,6 @@
 {
     "users": [
         {
-            "username": "emily",
-            "role": "lead",
-            "projects": []
-        },
-        {
-            "username": "jake",
-            "role": "developer",
-            "projects": []
-        },
-        {
             "username": "alex",
             "role": "lead",
             "projects": [
@@ -24,7 +14,7 @@
         },
         {
             "username": "taylor",
-            "role": "developer",
+            "role": "admin",
             "projects": []
         }
     ],
@@ -45,7 +35,7 @@
                 {
                     "id": 2,
                     "title": "Configure OAuth2",
-                    "is_completed": false,
+                    "is_completed": true,
                     "contributors": [
                         "jordan",
                         "taylor"

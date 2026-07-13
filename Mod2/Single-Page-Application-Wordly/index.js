@@ -21,16 +21,21 @@ async function fetchWordData(word) {
 }
 
 function displayWordData(wordData) {
+    const resultContainer = document.getElementById('result'); // Ensure this is defined
+    
     if (!wordData) {
+        resultContainer.style.display = 'block'; // Show the box to display the error
         resultContainer.innerHTML = '<p>Word not found. Please try another word.</p>';
         return;
     }
-    // tjis finds the first phonetic or audio that has text and audio
+    //shows the container only when it has content
+    resultContainer.style.display = 'flex';
+
+    // this finds the first phonetic or audio that has text and audio
     const { word, phonetics, meanings } = wordData;
     const phoneticText = phonetics.find((p) => p.text && p.audio) || phonetics[0] ||{};
     const audioUrl = phonetics.find(p => p.audio)?.audio;
     const meaning = meanings[0]?.definitions[0]?.definition || 'N/A';  
-
     const synonymsList = meanings[0]?.synonyms?.length > 0 ? meanings[0].synonyms : meanings[0]?.definitions[0]?.synonyms ||[];
     const synonyms = synonymsList.length > 0 ? synonymsList.join(', ') : 'N/A';
     const partOfSpeech = meanings[0]?.partOfSpeech || 'N/A';
@@ -41,7 +46,7 @@ function displayWordData(wordData) {
         <h2>${word}</h2>
         <button id="addFavorite" class="fav-btn">⭐ Favorite</button> </div>
         <p><strong>Meaning:</strong> ${meaning}</p>
-        <p><strong>Phonetic:</strong> ${phonetics.text || 'N/A'}</p>
+        <p><strong>Phonetic:</strong> ${phoneticText.text || 'N/A'}</p>
         <p><strong>Part of Speech:</strong> ${partOfSpeech}</p>
         <p><strong>Synonyms:</strong> ${synonyms}</p>
         <p><strong>Example:</strong> ${example}</p>
@@ -50,8 +55,6 @@ function displayWordData(wordData) {
     document.getElementById('addFavorite').addEventListener('click', () => {
         selectFavouriteWord(word);
     });
-
-
     if (audioUrl) {
         const audioElement = document.createElement('audio');
         audioElement.controls = true;
@@ -64,7 +67,7 @@ function displayWordData(wordData) {
 searchButton.addEventListener('click', async (event) => {
     event.preventDefault();
     const word = searchInput.value.trim();
-
+    resultContainer.style.display = 'none'; // Hide the box initially
     resultContainer.innerHTML = ''; // clear previous results
 
     if (word) {
@@ -80,50 +83,39 @@ document.addEventListener('DOMContentLoaded', () => {
     const content = document.querySelector('.content');
 
     // 1. Zoom, Blur, and Opacity Logic on Scroll
-    window.addEventListener('scroll', () => {
+    const handleScroll = () => {
         const fromTop = window.scrollY;
 
-        // Zoom logic
+        // Zoom logic: Starts at 150%, ends at 100%
         let zoomValue = 150 - (fromTop / 10);
         if (zoomValue < 100) zoomValue = 100;
 
         // Blur and Opacity logic
-        const blurValue = fromTop / 60;
+        const blurValue = fromTop / 20;
         const opacityValue = 1 - (fromTop / 1000);
 
         if (feature) {
-            feature.style.backgroundSize = `${zoomValue}%`;
-            feature.style.filter = `blur(${blurValue}px)`;
-            feature.style.opacity = opacityValue;
+            // Using requestAnimationFrame for better performance
+            window.requestAnimationFrame(() => {
+                feature.style.backgroundSize = `${zoomValue}%`;
+                feature.style.filter = `blur(${blurValue}px)`;
+                feature.style.opacity = opacityValue;
+            });
         }
-    });
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Call once on load to set initial state
 
     // 2. Automatic Smooth Scroll on Button Click
     if (searchButton && content) {
         searchButton.addEventListener('click', (e) => {
-            // Note: Your word fetching logic already handles e.preventDefault()
-            
-            const targetOffset = content.offsetTop - 40;
-
+            // Your API fetch logic should handle e.preventDefault()
+            const targetOffset = content.offsetTop + (window.innerHeight * 0.7); // Scroll to 70% of the content section
             window.scrollTo({
                 top: targetOffset,
                 behavior: 'smooth'
             });
-        });
-    }
-
-    // 3. Browser-specific Overlay Logic
-    const isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
-    const isSafari = /Safari/.test(navigator.userAgent) && /Apple Computer/.test(navigator.vendor);
-
-    if ((isChrome || isSafari) && feature) {
-        const opaqueDiv = document.createElement('div');
-        opaqueDiv.classList.add('opaque');
-        feature.appendChild(opaqueDiv);
-
-        window.addEventListener('scroll', () => {
-            const opacity = window.scrollY / 5000;
-            opaqueDiv.style.opacity = opacity;
         });
     }
 });

@@ -21,7 +21,7 @@ function renderList() {
     const textStyle = shoppingListItem.purchased ? "text-decoration: line-through; color: aqua;" : "";
     //Add new content without removing old ones
     section.innerHTML += `
-    <div class="card" style="border: 1px solid #ccc; border-radius: 8px; padding: 10px; margin: 10px 0; display: block; justify-content: start; align-items: center;">
+    <div class="card" style= border-radius: 8px; padding: 10px; margin: 10px 0; display: block; justify-content: start; align-items: center;">
       <div>
     <p style="${textStyle} margin: 0;"><strong>${shoppingListItem.names}</strong></p> 
       <p style="${textStyle} margin: 0;"> ${parseFloat(shoppingListItem.price).toFixed(2)}</p>

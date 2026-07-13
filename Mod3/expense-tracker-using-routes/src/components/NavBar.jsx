@@ -20,10 +20,16 @@ export default function NavBar () {
                  Overview
                 </p>
             <div className="space-y-2"> 
+                
                     <NavLink to='/'
                     className={({ isActive }) => linkBase + (isActive ? activeStyle : idleStyle)}>
                     <LayoutGrid size={20} />
                     <span> Home </span></NavLink>
+
+                    <NavLink to='/profile'
+                    className={({ isActive }) => linkBase + (isActive ? activeStyle : idleStyle)}>
+                    <User size={20} />
+                    <span>Profile</span></NavLink>
                     
                     <NavLink to='/wallet'
                     className={({ isActive }) => linkBase + (isActive ? activeStyle : idleStyle)}>
@@ -40,10 +46,7 @@ export default function NavBar () {
                     <ArrowLeftRight size={20} />
                     <span>Transactions</span></NavLink>
                     
-                    <NavLink to='/profile'
-                    className={({ isActive }) => linkBase + (isActive ? activeStyle : idleStyle)}>
-                    <User size={20} />
-                    <span>Profile</span></NavLink>
+                    
             </div>  
            </nav>
         )

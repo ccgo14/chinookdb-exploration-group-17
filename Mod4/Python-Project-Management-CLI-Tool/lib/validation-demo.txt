@@ -2,7 +2,7 @@ step 1: Test User Routing & Validations
 # These should succeed:
 python admin_tool.py add-user alex --role lead
 python admin_tool.py add-user jordan --role developer
-python admin_tool.py add-user taylor --role developer
+python admin_tool.py add-user taylor --role admin
 
 # This should trigger your custom error block:
 python admin_tool.py add-user hacker --role CEO
@@ -21,9 +21,6 @@ python admin_tool.py add-task "Configure OAuth2" --project WebApp --contributors
 Step 4: Verify the Rich Tables and File Persistence
 # View the entire project ecosystem board
 python admin_tool.py list-projects
-
-# Filter results specifically to Alex's workspace profile
-python admin_tool.py list-projects --user alex
 
 Step 5: Test State Persistence
 # Resolve the first task item

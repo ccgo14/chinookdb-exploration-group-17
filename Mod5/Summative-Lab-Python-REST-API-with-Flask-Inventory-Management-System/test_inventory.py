@@ -1,3 +1,4 @@
+
 import pytest
 from unittest.mock import patch, MagicMock
 import requests
@@ -145,3 +146,4 @@ def test_cli_update_item_validation(mock_patch, mock_input):
         json={"Price": 15.50}, 
         timeout=5
     )
+
